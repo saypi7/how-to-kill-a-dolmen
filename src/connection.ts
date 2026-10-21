@@ -1,8 +1,27 @@
+import type {Ack, ConnectionStatus, GameState, RequestEvent, RequestPayloads} from './types';
+
+type Timer = ReturnType<typeof globalThis.setTimeout>;
+interface ConnectionOptions {
+  WebSocket?: typeof WebSocket;
+  setTimeout?: typeof globalThis.setTimeout;
+  clearTimeout?: typeof globalThis.clearTimeout;
+  url?: string;
+  origin?: string;
+  storage?: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'> | null;
+}
+interface PendingRequest {
+  resolve: (ack: Ack) => void;
+  reject: (error: unknown) => void;
+  timer: Timer;
+  ws: WebSocket;
+  event: RequestEvent;
+}
+
 const SESSION_KEY = 'dino-session';
 const REQUEST_TIMEOUT = 5000;
 const REPLACED_CLOSE_CODE = 4001;
 
-export function socketUrl(configured, origin) {
+export function socketUrl(configured: string | undefined, origin: string | undefined) {
   const value = configured?.trim();
   const url = value ? new URL(value, value.startsWith('/') ? origin : undefined) : new URL('/ws', origin);
   if (!['http:', 'https:', 'ws:', 'wss:'].includes(url.protocol)) {
@@ -15,7 +34,25 @@ export function socketUrl(configured, origin) {
 
 // 한 탭의 연결과 세션만 관리합니다. 수량·전투 계산은 Go 서버가 담당합니다.
 export class Connection {
-  constructor(onState, onStatus, onError, options = {}) {
+  onState: (state: GameState | null) => void;
+  onStatus: (status: ConnectionStatus) => void;
+  onError: (message: string) => void;
+  WebSocket: typeof WebSocket;
+  setTimeout: typeof globalThis.setTimeout;
+  clearTimeout: typeof globalThis.clearTimeout;
+  configured: string | undefined;
+  origin: string | undefined;
+  storage: ConnectionOptions['storage'];
+  pending: Map<string, PendingRequest>;
+  stopped: boolean;
+  ready: boolean;
+  retry: number;
+  sequence: number;
+  resumeToken: string | null;
+  reconnectTimer: Timer | undefined;
+  ws: WebSocket | undefined;
+
+  constructor(onState: Connection['onState'], onStatus: Connection['onStatus'], onError: Connection['onError'], options: ConnectionOptions = {}) {
     this.onState = onState;
     this.onStatus = onStatus;
     this.onError = onError;
@@ -38,7 +75,7 @@ export class Connection {
     try { return this.storage?.getItem(SESSION_KEY) || null; } catch { return null; }
   }
 
-  saveToken(token) {
+  saveToken(token: string | null) {
     this.resumeToken = token || null;
     try {
       if (token) this.storage?.setItem(SESSION_KEY, token);
@@ -51,12 +88,12 @@ export class Connection {
     this.clearTimeout(this.reconnectTimer);
     this.ready = false;
     this.onStatus('connecting');
-    let ws;
+    let ws: WebSocket;
     try {
       ws = this.ws = new this.WebSocket(socketUrl(this.configured, this.origin));
     } catch (error) {
       this.onStatus('disconnected');
-      this.onError(error.message || '서버 주소를 확인해 주세요.');
+      this.onError(error instanceof Error ? error.message : '서버 주소를 확인해 주세요.');
       return;
     }
     const current = () => !this.stopped && this.ws === ws;
@@ -87,7 +124,7 @@ export class Connection {
 
     ws.onmessage = event => {
       if (!current() || ws.readyState !== this.WebSocket.OPEN) return;
-      let data;
+      let data: GameState | Ack;
       try { data = JSON.parse(event.data); } catch {
         this.onError('서버 응답을 읽을 수 없습니다.');
         return;
@@ -123,14 +160,14 @@ export class Connection {
     ws.onerror = () => { if (current()) ws.close(); };
   }
 
-  send(event, data = {}) {
+  send<E extends RequestEvent>(event: E, ...args: E extends 'leave' ? [data?: RequestPayloads[E]] : [data: RequestPayloads[E]]) {
     if (!this.ready || this.stopped) return Promise.reject(new Error('서버 연결을 기다려 주세요.'));
-    return this.request(event, data, this.ws);
+    return this.request(event, args[0] ?? {}, this.ws);
   }
 
-  request(event, data, ws) {
-    if (ws?.readyState !== this.WebSocket.OPEN) return Promise.reject(new Error('서버 연결을 기다려 주세요.'));
-    return new Promise((resolve, reject) => {
+  request(event: RequestEvent, data: RequestPayloads[RequestEvent], ws: WebSocket | undefined): Promise<Ack> {
+    if (!ws || ws.readyState !== this.WebSocket.OPEN) return Promise.reject(new Error('서버 연결을 기다려 주세요.'));
+    return new Promise<Ack>((resolve, reject) => {
       const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}-${++this.sequence}`;
       const timer = this.setTimeout(() => {
         this.pending.delete(requestId);

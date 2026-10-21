@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {attackMotion,fitSprite,hitMotion,screenDirection,smoothPosition,travelMotion,unitDirection} from '../src/battleMotion.js';
+import {attackMotion,fitSprite,hitMotion,screenDirection,smoothPosition,travelMotion,unitDirection} from '../src/battleMotion.ts';
 
 test('target direction follows enemies on either side, including units behind the usual front',()=>{
  const units=[{id:'enemy',x:300}];

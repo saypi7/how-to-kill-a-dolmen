@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {Connection, socketUrl} from '../src/connection.js';
+import {Connection, socketUrl} from '../src/connection.ts';
 
 const flush = async () => { await Promise.resolve(); await Promise.resolve(); };
 
