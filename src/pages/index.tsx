@@ -1,5 +1,4 @@
 import css from "./styles.module.css";
-import controls from "../components/controls.module.css";
 import type { Ack, ConnectionStatus, GameData, GameState, RequestEvent, RequestPayloads, Spawn } from "../types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Connection } from "../modules/connection";
@@ -153,10 +152,10 @@ export default function Page() {
                 </a>
                 <div className={css["top-actions"]}>
                     <BackgroundMusic />
-                    <button className={controls["text-button"]} onClick={() => setEncyclopedia(true)}>
+                    <button className={css["text-button"]} onClick={() => setEncyclopedia(true)}>
                         공룡 도감
                     </button>
-                    <button className={controls["text-button"]} onClick={() => setGuide(true)}>
+                    <button className={css["text-button"]} onClick={() => setGuide(true)}>
                         게임 방법
                     </button>
                 </div>

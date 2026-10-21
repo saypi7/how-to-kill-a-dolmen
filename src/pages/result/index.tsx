@@ -1,5 +1,4 @@
 import css from "./styles.module.css";
-import controls from "../../components/controls.module.css";
 import { resultMessage } from "../../modules/game";
 import type { ConnectionStatus, GameData, GameState } from "../../types";
 import Sprite from "../../components/Sprite";
@@ -17,7 +16,7 @@ export default function Page(props: Props) {
     return (
         <main className={css["result-scene"]}>
             <section className={css["result-content"]}>
-                <p className={controls["eyebrow"]}>대전 종료</p>
+                <p className={css["eyebrow"]}>대전 종료</p>
                 <h1>{state.winner === null ? "무승부!" : state.winner === state.you ? "생존 성공!" : "멸종했습니다..."}</h1>
                 <p>{resultMessage(state)}</p>
                 <div className={css["result-art"]}>
@@ -42,7 +41,7 @@ export default function Page(props: Props) {
                     ))}
                 </div>
                 {state.winner !== null && state.winner !== state.you && <p>내 공룡들이 모두 멸종했습니다.</p>}
-                <button className={controls["primary"]} onClick={leave} disabled={status !== "connected"}>
+                <button className={css["primary"]} onClick={leave} disabled={status !== "connected"}>
                     처음으로 돌아가기
                 </button>
                 <p className={css["result-note"]}>새 방을 만들어 다시 도전할 수 있어요.</p>

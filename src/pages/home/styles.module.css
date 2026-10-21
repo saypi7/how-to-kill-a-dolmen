@@ -1,3 +1,20 @@
+button.primary {
+    background: #edd385;
+    border: 3px solid #503527;
+    box-shadow: 0 4px 0 #503527;
+    padding: 15px 20px;
+    font-size: 18px;
+}
+
+button.primary:hover:enabled {
+    background: #f6df9c;
+}
+
+button.primary:active:enabled {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #503527;
+}
+
 .home-scene {
     min-height: calc(100vh - 72px);
     background: url("/assets/background.png") center bottom/cover no-repeat;

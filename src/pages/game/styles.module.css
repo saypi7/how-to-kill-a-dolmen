@@ -1,3 +1,19 @@
+.text-button {
+    border: 0;
+    background: transparent;
+    padding: 6px 0;
+    font-size: 14px;
+    box-shadow: none;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.text-button:hover:enabled {
+    background: transparent;
+    color: #653725;
+}
+
 .game-layout {
     max-width: 1360px;
     margin: auto;

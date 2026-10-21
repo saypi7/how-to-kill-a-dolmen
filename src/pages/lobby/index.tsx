@@ -1,5 +1,4 @@
 import css from "./styles.module.css";
-import controls from "../../components/controls.module.css";
 import { playerStatus } from "../../modules/game";
 import type { ConnectionStatus, GameData, GameState, Player } from "../../types";
 import Sprite from "../../components/Sprite";
@@ -21,7 +20,7 @@ export default function Page(props: Props) {
     return (
         <main className={css["lobby-scene"]}>
             <section className={css["lobby-content"]}>
-                <p className={controls["eyebrow"]}>친구에게 이 코드를 알려 주세요</p>
+                <p className={css["eyebrow"]}>친구에게 이 코드를 알려 주세요</p>
                 <button className={css["room-code"]} title="방 코드 복사" onClick={copyCode}>
                     {state.code}
                     <small>복사</small>
@@ -39,10 +38,10 @@ export default function Page(props: Props) {
                     ))}
                 </div>
                 <p>둘 다 준비하면 공룡 수집이 시작됩니다.</p>
-                <button className={`${controls["primary"]} ${css["ready-button"]}`} disabled={status !== "connected" || readyBusy} onClick={toggleReady}>
+                <button className={`${css["primary"]} ${css["ready-button"]}`} disabled={status !== "connected" || readyBusy} onClick={toggleReady}>
                     {me.ready ? "준비 취소" : "준비 완료"}
                 </button>
-                <button className={`${controls["text-button"]} ${css["leave-button"]}`} onClick={leave}>
+                <button className={`${css["text-button"]} ${css["leave-button"]}`} onClick={leave}>
                     방 나가기
                 </button>
             </section>

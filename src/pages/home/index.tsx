@@ -1,5 +1,4 @@
 import css from "./styles.module.css";
-import controls from "../../components/controls.module.css";
 import type { ConnectionStatus, GameData } from "../../types";
 import Sprite from "../../components/Sprite";
 import Title from "../../components/Title";
@@ -30,7 +29,7 @@ export default function Page(props: Props) {
                 <h2>함께할 탐험가를 찾으세요</h2>
                 <label htmlFor="name">내 이름</label>
                 <input id="name" value={name} maxLength={16} onChange={(e) => setName(e.target.value)} placeholder="탐험가 이름" autoComplete="nickname" />
-                <button className={`${controls.primary} ${css["create-button"]}`} disabled={busy || status !== "connected"} onClick={() => enter("create")}>
+                <button className={`${css.primary} ${css["create-button"]}`} disabled={busy || status !== "connected"} onClick={() => enter("create")}>
                     새 방 만들기
                 </button>
                 <div className={css["join-divider"]}>

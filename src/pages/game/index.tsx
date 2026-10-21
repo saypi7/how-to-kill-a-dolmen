@@ -1,5 +1,4 @@
 import css from "./styles.module.css";
-import controls from "../../components/controls.module.css";
 import type { Ack, ConnectionStatus, GameData, GameState, Player, Spawn } from "../../types";
 import Battle from "../../components/Battle";
 import CollectionField from "../../components/CollectionField";
@@ -62,7 +61,7 @@ export default function Page(props: Props) {
                     방 {state.code}
                     {other && !other.connected ? " · 상대가 재연결 중입니다. 잠시 후 부전승 처리됩니다." : ""}
                 </span>
-                <button className={controls["text-button"]} onClick={leave}>
+                <button className={css["text-button"]} onClick={leave}>
                     기권하고 나가기
                 </button>
             </footer>
