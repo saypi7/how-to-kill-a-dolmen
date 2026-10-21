@@ -1,0 +1,7 @@
+tabWidth: 4
+printWidth: 240
+useTabs: false
+singleQuote: false
+quoteProps: preserve
+semi: true
+trailingComma: none
