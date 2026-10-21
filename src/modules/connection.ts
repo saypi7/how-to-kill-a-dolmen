@@ -1,4 +1,4 @@
-import type { Ack, ConnectionStatus, GameState, RequestEvent, RequestPayloads } from "./types";
+import type { Ack, ConnectionStatus, GameState, RequestEvent, RequestPayloads } from "../types";
 
 type Timer = ReturnType<typeof globalThis.setTimeout>;
 interface ConnectionOptions {

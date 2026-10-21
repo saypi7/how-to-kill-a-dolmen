@@ -1,0 +1,143 @@
+.inventory {
+    background: #f1efdf;
+    border: 2px solid #5b4834;
+    margin-top: 16px;
+    padding: 14px 18px 12px;
+}
+
+.inventory-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.inventory-label h2 {
+    font-size: 17px;
+    margin: 0;
+}
+
+.inventory-label h2 span {
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 6px;
+}
+
+.inventory-label > span {
+    font-size: 12px;
+    color: #695a47;
+}
+
+.inventory-scroll {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    min-height: 120px;
+}
+
+.dino-card {
+    position: relative;
+    flex: 0 0 146px;
+    border: 0;
+    border-right: 1px solid #c7bfa9;
+    border-radius: 0;
+    padding: 3px 10px 0;
+    background: transparent;
+    text-align: center;
+}
+
+.dino-card:disabled {
+    opacity: 1;
+}
+
+.dino-card > .sprite {
+    height: 74px;
+}
+
+.dino-card > strong {
+    font-size: 12px;
+    display: block;
+    white-space: nowrap;
+}
+
+.dino-card > small {
+    font-size: 10px;
+    display: block;
+    margin-top: 4px;
+    color: #77664f;
+}
+
+.quantity {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    font-size: 17px;
+    font-weight: 900;
+    background: #f1efdf;
+    padding: 0 4px;
+}
+
+.empty-inventory {
+    font-size: 14px;
+    align-self: center;
+    margin: auto;
+    color: #746958;
+}
+
+@media (max-width: 650px) {
+    .inventory {
+        padding: 12px 8px;
+    }
+
+    .inventory-label > span {
+        font-size: 9px;
+        max-width: 140px;
+        text-align: right;
+    }
+
+    .inventory-scroll {
+        min-height: 100px;
+    }
+
+    .dino-card {
+        flex-basis: 125px;
+    }
+
+    .dino-card > .sprite {
+        height: 65px;
+    }
+}
+
+@media (min-width: 950px) and (max-height: 850px) {
+    .inventory-scroll {
+        min-height: 104px;
+    }
+
+    .dino-card > .sprite {
+        height: 60px;
+    }
+}
+
+.unit-role {
+    display: block;
+    font-size: 10px;
+    margin-top: 3px;
+    color: #5a6546;
+    font-weight: 800;
+}
+
+.dino-card:disabled {
+    cursor: default;
+}
+
+.dino-card:disabled .sprite {
+    opacity: 1;
+}
+
+@media (max-width: 650px) {
+    .inventory-label h2 {
+        font-size: 15px;
+    }
+}

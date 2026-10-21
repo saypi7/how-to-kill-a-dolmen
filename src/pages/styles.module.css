@@ -1,0 +1,156 @@
+:where(.app) button,
+:where(.app) input {
+    font: inherit;
+}
+
+:where(.app) button {
+    cursor: pointer;
+    color: inherit;
+}
+
+:where(.app) button:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+:where(.app) button:focus-visible,
+:where(.app) a:focus-visible,
+:where(.app) input:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 4px;
+}
+
+:where(.app) button,
+:where(.app) input {
+    border: 2px solid #503527;
+    border-radius: 5px;
+}
+
+:where(.app) button {
+    background: #f5f0df;
+    padding: 12px 20px;
+    font-weight: 800;
+}
+
+:where(.app) button:hover:enabled {
+    background: #fff9e7;
+}
+
+:where(.app) input {
+    min-width: 0;
+    width: 100%;
+    padding: 12px 14px;
+    background: #fffcf1;
+    color: #34291f;
+}
+
+:where(.app) input::placeholder {
+    color: #817967;
+}
+
+.app {
+    min-height: 100vh;
+    position: relative;
+}
+
+.topbar {
+    height: 72px;
+    padding: 0 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+    background: #7dacd5;
+    border-bottom: 1px solid #45628344;
+}
+
+.wordmark {
+    font-size: 18px;
+    font-weight: 900;
+    text-decoration: none;
+    color: #33291f;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.loading {
+    padding: 100px;
+    text-align: center;
+}
+
+.connection-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f4edce;
+    color: #443125;
+    padding: 12px;
+    text-align: center;
+    border-top: 2px solid #57412c;
+    z-index: 30;
+    font-size: 13px;
+}
+
+.error-toast,
+.small-toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+    background: #fff9e9;
+    border: 2px solid #583a29;
+    padding: 15px 22px;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.error-toast button {
+    border: 0;
+    padding: 0 4px;
+    font-size: 24px;
+    background: transparent;
+}
+
+@media (max-width: 650px) {
+    .topbar {
+        padding: 0 16px;
+        height: 60px;
+    }
+
+    .wordmark {
+        font-size: 14px;
+    }
+
+    .top-actions {
+        gap: 10px;
+    }
+
+    .top-actions > button {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 950px) and (max-height: 850px) {
+    [data-phase="battle"] .topbar,
+    [data-phase="collect"] .topbar {
+        height: 56px;
+    }
+}
+
+@media (max-width: 650px) {
+    .wordmark {
+        max-width: 155px;
+        font-size: 13px;
+        line-height: 1.25;
+    }
+}

@@ -1,3 +1,4 @@
+import css from "./styles.module.css";
 import { useEffect, useRef, useState } from "react";
 
 function savedVolume() {
@@ -20,9 +21,10 @@ export default function BackgroundMusic() {
         music.volume = currentVolume.current;
         audio.current = music;
         const play = () => {
-            if (music.paused) void music.play().catch(() => {
-                // Autoplay may be blocked; retry on the next user interaction.
-            });
+            if (music.paused)
+                void music.play().catch(() => {
+                    // Autoplay may be blocked; retry on the next user interaction.
+                });
         };
         play();
         document.addEventListener("pointerdown", play);
@@ -39,7 +41,7 @@ export default function BackgroundMusic() {
 
     return (
         <input
-            className="music-volume"
+            className={css["music-volume"]}
             type="range"
             min="0"
             max="100"

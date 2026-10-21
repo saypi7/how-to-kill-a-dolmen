@@ -1,0 +1,30 @@
+@font-face {
+    font-family: "parkdahyeon";
+    src: url("/ParkDaHyeon.ttf") format("truetype");
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+:root {
+    font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    color: #34291f;
+    background: #7dacd5;
+    font-synthesis: none;
+    font-weight: 500;
+}
+
+body {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

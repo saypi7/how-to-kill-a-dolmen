@@ -1,0 +1,16 @@
+.music-volume {
+    width: 100px;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+    accent-color: #653725;
+    cursor: pointer;
+}
+
+@media (max-width: 650px) {
+    .music-volume {
+        width: 60px;
+    }
+}

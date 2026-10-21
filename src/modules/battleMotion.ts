@@ -1,4 +1,4 @@
-import type { DinoClass, Side, Unit } from "./types";
+import type { DinoClass, Side, Unit } from "../types";
 
 // These offsets are presentation only. The server owns every unit's x, hp and target.
 const profiles = {

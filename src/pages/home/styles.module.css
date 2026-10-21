@@ -1,0 +1,210 @@
+.home-scene {
+    min-height: calc(100vh - 72px);
+    background: url("/assets/background.png") center bottom/cover no-repeat;
+    position: relative;
+}
+
+.home-scene {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    max-width: none;
+    padding: 55px max(6vw, 28px) 150px;
+    gap: 30px;
+    overflow: hidden;
+}
+
+.home-title {
+    z-index: 1;
+    padding-left: 5%;
+    pointer-events: none;
+}
+
+.home-title-sub {
+    font-family: "parkdahyeon";
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.room-menu {
+    position: relative;
+    z-index: 2;
+    margin-top: 10px;
+    align-self: start;
+    background: #f6f3e5;
+    padding: 30px 28px 22px;
+    border: 3px solid #503527;
+    border-radius: 8px 5px 11px 6px;
+    box-shadow: 5px 6px 0 #503527;
+    transform: rotate(1deg);
+}
+
+.room-menu h2 {
+    font-size: 20px;
+    margin: 0 0 24px;
+    letter-spacing: -0.5px;
+}
+
+.room-menu label {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    margin: 12px 0 8px;
+}
+
+.room-menu > .create-button {
+    width: 100%;
+    margin: 16px 0 12px;
+}
+
+.join-divider {
+    margin: 15px 0 12px;
+    text-align: center;
+    position: relative;
+    border-top: 1px solid #bfb69c;
+    height: 10px;
+}
+
+.join-divider span {
+    position: relative;
+    top: -11px;
+    padding: 0 12px;
+    background: #f6f3e5;
+    font-size: 12px;
+    color: #736959;
+}
+
+.code-entry {
+    display: flex;
+    gap: 8px;
+}
+
+.code-entry input {
+    letter-spacing: 1px;
+}
+
+.code-entry button {
+    white-space: nowrap;
+    padding: 10px 14px;
+}
+
+.home-dinos {
+    position: absolute;
+    left: 4%;
+    bottom: 12%;
+    width: 65%;
+    height: 30%;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.hero {
+    width: 35%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.hero-0 {
+    z-index: 2;
+    transform: rotate(-3deg);
+}
+
+.hero-1 {
+    margin-left: -3%;
+    height: 88%;
+}
+
+.hero-2 {
+    height: 120%;
+    margin-left: -3%;
+}
+
+.home-footnote {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 13px;
+    color: #fbf7df;
+}
+
+@media (min-width: 1500px) {
+    .home-scene {
+        padding-right: 12vw;
+        padding-left: 12vw;
+    }
+
+    .home-dinos {
+        left: 12%;
+        width: 55%;
+        height: 34%;
+    }
+
+    .home-title {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 950px) {
+    .home-scene {
+        grid-template-columns: 1fr 330px;
+        padding: 40px 30px 160px;
+        gap: 15px;
+    }
+
+    .home-title {
+        padding-left: 0;
+    }
+
+    .home-title p {
+        font-size: 16px;
+    }
+
+    .room-menu {
+        padding: 24px 20px;
+    }
+
+    .home-dinos {
+        width: 62%;
+        bottom: 7%;
+        height: 25%;
+    }
+}
+
+@media (max-width: 650px) {
+    .home-scene {
+        display: flex;
+        flex-direction: column;
+        padding: 25px 24px 150px;
+        min-height: 940px;
+        background-position: 45% bottom;
+    }
+
+    .home-title {
+        text-align: center;
+    }
+
+    .home-title p {
+        font-size: 14px;
+    }
+
+    .room-menu {
+        width: 100%;
+        max-width: 370px;
+        align-self: center;
+        margin: 5px 0 0;
+    }
+
+    .home-dinos {
+        left: 5%;
+        width: 90%;
+        height: 130px;
+        bottom: 6%;
+    }
+
+    .home-footnote {
+        font-size: 11px;
+        bottom: 15px;
+    }
+}

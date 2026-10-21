@@ -1,0 +1,72 @@
+.result-scene {
+    min-height: calc(100vh - 72px);
+    background: url("/assets/background.png") center bottom/cover no-repeat;
+    position: relative;
+}
+
+.result-content {
+    max-width: 780px;
+    margin: auto;
+    text-align: center;
+    padding: 40px 24px 55px;
+}
+
+.result-content {
+    padding-top: 45px;
+}
+
+.result-content h1 {
+    font-size: 55px;
+    margin: 12px 0 16px;
+    letter-spacing: -2px;
+    color: #35291f;
+}
+
+.result-content > p {
+    font-size: 14px;
+}
+
+.result-art {
+    height: 180px;
+    margin: 18px auto;
+}
+
+.result-art > .sprite,
+.result-art > img {
+    height: 100%;
+    width: 300px;
+    object-fit: contain;
+    margin: auto;
+}
+
+.result-score {
+    display: flex;
+    gap: 35px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.result-score > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.result-score span {
+    font-size: 12px;
+}
+
+.result-note {
+    font-size: 12px !important;
+}
+
+@media (max-width: 650px) {
+    .result-content h1 {
+        font-size: 38px;
+    }
+
+    .result-score {
+        gap: 15px;
+    }
+}
