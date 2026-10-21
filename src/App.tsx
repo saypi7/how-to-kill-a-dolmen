@@ -1,9 +1,10 @@
 import type { Ack, ConnectionStatus, GameData, GameState, Phase, Player, RequestEvent, RequestPayloads, Spawn } from "./types";
 import { useEffect, useRef, useState } from "react";
 import { Connection } from "./connection";
-import Sprite from "./Sprite";
+import Sprite, { preloadSprites } from "./Sprite";
 import Battle from "./Battle";
 import Title from "./Title";
+import BackgroundMusic from "./BackgroundMusic";
 
 const total = (p: Player | null | undefined) => Object.values(p?.inventory || {}).reduce((a, n) => a + n, 0);
 function savedName() {
@@ -52,8 +53,9 @@ export default function App() {
         try {
             const r = await fetch("/game-data.json");
             if (!r.ok) throw Error();
-            const result = await r.json();
+            const result: GameData = await r.json();
             if (!result.config || !Array.isArray(result.dinos) || !result.dinos.length) throw Error();
+            await preloadSprites(result.dinos);
             setData(result);
         } catch {
             setLoadError(true);
@@ -165,6 +167,7 @@ export default function App() {
                     How to Kill a Dolmen
                 </a>
                 <div className="top-actions">
+                    <BackgroundMusic />
                     <button className="text-button" onClick={() => setEncyclopedia(true)}>
                         공룡 도감
                     </button>
@@ -177,7 +180,7 @@ export default function App() {
                 <main className="loading">
                     {loadError ? (
                         <>
-                            <p>공룡 데이터를 불러오지 못했습니다.</p>
+                            <p>공룡 데이터나 이미지를 불러오지 못했습니다.</p>
                             <button onClick={loadData}>다시 불러오기</button>
                         </>
                     ) : (

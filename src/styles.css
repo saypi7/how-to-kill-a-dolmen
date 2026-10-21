@@ -116,6 +116,17 @@ button.primary:active:enabled {
     gap: 22px;
 }
 
+.top-actions .music-volume {
+    width: 100px;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+    accent-color: #653725;
+    cursor: pointer;
+}
+
 .text-button {
     border: 0;
     background: transparent;
@@ -974,7 +985,11 @@ button.primary:active:enabled {
     }
 
     .top-actions {
-        gap: 15px;
+        gap: 10px;
+    }
+
+    .top-actions .music-volume {
+        width: 60px;
     }
 
     .top-actions .text-button {
