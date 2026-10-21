@@ -171,9 +171,6 @@ export default function App() {
                     <button className="text-button" onClick={() => setGuide(true)}>
                         게임 방법
                     </button>
-                    <span className="connection" data-status={status}>
-                        {statusText[status]}
-                    </span>
                 </div>
             </header>
             {!data ? (
@@ -193,7 +190,7 @@ export default function App() {
                         <main className="home-scene">
                             <div className="home-title">
                                 <Title />
-                                <p>먼저 모으고, 끝까지 살아남아라.</p>
+                                <p className="home-title-sub">공룡을 모으고, 살아남으세요!</p>
                             </div>
                             <section className="room-menu" aria-label="방 생성 또는 입장">
                                 <h2>함께할 탐험가를 찾으세요</h2>
