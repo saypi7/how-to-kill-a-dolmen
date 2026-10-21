@@ -37,7 +37,6 @@ export default function Page(props: Props) {
                         </div>
                     ))}
                 </div>
-                <p>둘 다 준비하면 공룡 수집이 시작됩니다.</p>
                 <button className={`${css["primary"]} ${css["ready-button"]}`} disabled={status !== "connected" || readyBusy} onClick={toggleReady}>
                     {me.ready ? "준비 취소" : "준비 완료"}
                 </button>
