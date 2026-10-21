@@ -80,10 +80,6 @@ button.primary:active:enabled {
     font-size: 12px;
 }
 
-.result-note {
-    font-size: 12px !important;
-}
-
 @media (max-width: 650px) {
     .result-content h1 {
         font-size: 38px;

@@ -44,7 +44,6 @@ export default function Page(props: Props) {
                 <button className={css["primary"]} onClick={leave} disabled={status !== "connected"}>
                     처음으로 돌아가기
                 </button>
-                <p className={css["result-note"]}>새 방을 만들어 다시 도전할 수 있어요.</p>
             </section>
         </main>
     );

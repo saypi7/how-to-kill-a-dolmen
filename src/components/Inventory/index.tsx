@@ -50,7 +50,7 @@ export default function Inventory(props: Props) {
                 <h2>
                     내 공룡 <span>{total(me)}마리</span>
                 </h2>
-                <span>{phase === "collect" ? "수집한 공룡은 전투에서 소환할 수 있어요." : "클릭할 때마다 1마리 소환"}</span>
+                <span>{phase === "collect" ? "수집한 공룡은 전투에서 소환할 수 있어요." : ""}</span>
             </div>
             <div className={css["inventory-scroll"]}>
                 {owned.length ? (
