@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: dino-extinction-battle
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    numInstances: 1
+    healthCheckPath: /healthz
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: GAME_DATA_PATH
+        value: /app/public/game-data.json
+      - key: FRONTEND_DIR
+        value: /app/dist

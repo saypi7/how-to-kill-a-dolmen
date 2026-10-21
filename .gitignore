@@ -1,0 +1,16 @@
+node_modules/
+dist/
+bin/
+.env
+.env.*
+!.env.example
+backend/server
+backend/server.exe
+backend/dino-server
+backend/dino-server.exe
+coverage/
+test-results/
+playwright-report/
+*.log
+.DS_Store
+Thumbs.db

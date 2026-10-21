@@ -1,0 +1,14 @@
+node_modules
+dist
+bin
+.git
+.env
+.env.*
+!.env.example
+work
+test-results
+playwright-report
+backend/server
+backend/server.exe
+backend/dino-server
+backend/dino-server.exe

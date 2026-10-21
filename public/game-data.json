@@ -1,0 +1,862 @@
+{
+  "config": {
+    "collectMs": 30000,
+    "battleMs": 90000,
+    "baseHp": 1200,
+    "tickMs": 50,
+    "spawnMin": 380,
+    "spawnMax": 780,
+    "visibleMin": 400,
+    "visibleMax": 900,
+    "bushes": 6,
+    "width": 1200,
+    "bases": [
+      85,
+      1115
+    ],
+    "summonCooldown": 180,
+    "disconnectMs": 15000
+  },
+  "dinos": [
+    {
+      "id": "tyranno",
+      "name": "티라노",
+      "image": "/assets/sprites/tyranno.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.00353501,
+        0.0110765,
+        0.22012237,
+        0.28660436
+      ],
+      "weight": 4,
+      "hp": 330,
+      "attack": 76,
+      "interval": 1100,
+      "speed": 47,
+      "range": 72,
+      "role": "강한 한 방",
+      "size": 170,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "spino",
+      "name": "스피노",
+      "image": "/assets/sprites/spino.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.23127124,
+        0.00519211,
+        0.21522774,
+        0.27933541
+      ],
+      "weight": 4,
+      "hp": 330,
+      "attack": 76,
+      "interval": 1100,
+      "speed": 47,
+      "range": 72,
+      "role": "강한 한 방",
+      "size": 170,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "carnotaurus",
+      "name": "카르노타우루스",
+      "image": "/assets/sprites/carnotaurus.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.4592794,
+        0.02042229,
+        0.23725357,
+        0.30668051
+      ],
+      "weight": 7,
+      "hp": 235,
+      "attack": 39,
+      "interval": 850,
+      "speed": 62,
+      "range": 60,
+      "role": "균형 전투",
+      "size": 145,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "tricera",
+      "name": "트리케라",
+      "image": "/assets/sprites/tricera.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.72508498,
+        0.01176878,
+        0.16301835,
+        0.32225684
+      ],
+      "weight": 4,
+      "hp": 480,
+      "attack": 42,
+      "interval": 1250,
+      "speed": 34,
+      "range": 68,
+      "role": "튼튼한 방어",
+      "size": 158,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "quetzal",
+      "name": "케찰코아틀루스",
+      "image": "/assets/sprites/quetzal.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.0067981,
+        0.34856352,
+        0.22800816,
+        0.32052613
+      ],
+      "weight": 8,
+      "hp": 115,
+      "attack": 27,
+      "interval": 850,
+      "speed": 96,
+      "range": 105,
+      "role": "빠른 지원",
+      "size": 137,
+      "class": "flying",
+      "roleLabel": "비행"
+    },
+    {
+      "id": "brachio",
+      "name": "브라키오",
+      "image": "/assets/sprites/brachio.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.24935418,
+        0.29006577,
+        0.17987763,
+        0.33160263
+      ],
+      "weight": 4,
+      "hp": 450,
+      "attack": 40,
+      "interval": 1500,
+      "speed": 36,
+      "range": 112,
+      "role": "긴 사거리",
+      "size": 170,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "parasaur",
+      "name": "파라사우롤로푸스",
+      "image": "/assets/sprites/parasaur.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.48851122,
+        0.32814123,
+        0.20639021,
+        0.31048806
+      ],
+      "weight": 8,
+      "hp": 275,
+      "attack": 30,
+      "interval": 1000,
+      "speed": 53,
+      "range": 65,
+      "role": "든든한 지원",
+      "size": 142,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "velociraptor",
+      "name": "벨로키랍토르",
+      "image": "/assets/sprites/velociraptor.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.72005438,
+        0.37106265,
+        0.24038069,
+        0.26445137
+      ],
+      "weight": 10,
+      "hp": 140,
+      "attack": 24,
+      "interval": 650,
+      "speed": 100,
+      "range": 52,
+      "role": "빠른 돌격",
+      "size": 120,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "peteino",
+      "name": "페테이노사우루스",
+      "image": "/assets/sprites/peteino.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.00938137,
+        0.69747317,
+        0.18613188,
+        0.21079958
+      ],
+      "weight": 8,
+      "hp": 115,
+      "attack": 27,
+      "interval": 850,
+      "speed": 96,
+      "range": 105,
+      "role": "빠른 지원",
+      "size": 137,
+      "class": "flying",
+      "roleLabel": "비행"
+    },
+    {
+      "id": "pteranodon",
+      "name": "프테라노돈",
+      "image": "/assets/sprites/pteranodon.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.21917063,
+        0.64624438,
+        0.24269205,
+        0.28314296
+      ],
+      "weight": 8,
+      "hp": 115,
+      "attack": 27,
+      "interval": 850,
+      "speed": 96,
+      "range": 105,
+      "role": "빠른 지원",
+      "size": 137,
+      "class": "flying",
+      "roleLabel": "비행"
+    },
+    {
+      "id": "ankylo",
+      "name": "안킬로사우루스",
+      "image": "/assets/sprites/ankylo.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.45900748,
+        0.65662859,
+        0.27804215,
+        0.27760471
+      ],
+      "weight": 4,
+      "hp": 480,
+      "attack": 42,
+      "interval": 1250,
+      "speed": 34,
+      "range": 68,
+      "role": "튼튼한 방어",
+      "size": 158,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "giga",
+      "name": "기가노토사우루스",
+      "image": "/assets/sprites/giga.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos1.png",
+      "sourceCrop": [
+        0.74425561,
+        0.67324334,
+        0.24133243,
+        0.28245067
+      ],
+      "weight": 4,
+      "hp": 330,
+      "attack": 76,
+      "interval": 1100,
+      "speed": 47,
+      "range": 72,
+      "role": "강한 한 방",
+      "size": 170,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "liliensternus",
+      "name": "릴리엔스테르누스",
+      "image": "/assets/sprites/liliensternus.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos3.png",
+      "sourceCrop": [
+        0.01703163,
+        0.0341715,
+        0.36872373,
+        0.2865893
+      ],
+      "weight": 10,
+      "hp": 140,
+      "attack": 24,
+      "interval": 650,
+      "speed": 100,
+      "range": 52,
+      "role": "빠른 돌격",
+      "size": 120,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "herrera",
+      "name": "헤레라사우루스",
+      "image": "/assets/sprites/herrera.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos3.png",
+      "sourceCrop": [
+        0.41738553,
+        0.05480335,
+        0.38088918,
+        0.27981947
+      ],
+      "weight": 7,
+      "hp": 235,
+      "attack": 39,
+      "interval": 850,
+      "speed": 62,
+      "range": 60,
+      "role": "균형 전투",
+      "size": 145,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "stauriko",
+      "name": "스타우리코사우루스",
+      "image": "/assets/sprites/stauriko.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos3.png",
+      "sourceCrop": [
+        0.02410971,
+        0.34010316,
+        0.35744304,
+        0.25338491
+      ],
+      "weight": 10,
+      "hp": 140,
+      "attack": 24,
+      "interval": 650,
+      "speed": 100,
+      "range": 52,
+      "role": "빠른 돌격",
+      "size": 120,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "plateo",
+      "name": "플라테오사우루스",
+      "image": "/assets/sprites/plateo.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos3.png",
+      "sourceCrop": [
+        0.40411413,
+        0.3584784,
+        0.36142446,
+        0.2617666
+      ],
+      "weight": 8,
+      "hp": 275,
+      "attack": 30,
+      "interval": 1000,
+      "speed": 53,
+      "range": 65,
+      "role": "든든한 지원",
+      "size": 142,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "eoraptor",
+      "name": "에오랍토르",
+      "image": "/assets/sprites/eoraptor.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos3.png",
+      "sourceCrop": [
+        0.07719531,
+        0.61831077,
+        0.22848927,
+        0.25725338
+      ],
+      "weight": 12,
+      "hp": 95,
+      "attack": 17,
+      "interval": 650,
+      "speed": 115,
+      "range": 45,
+      "role": "재빠른 물량",
+      "size": 101,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "coelophysis",
+      "name": "코엘로피시스",
+      "image": "/assets/sprites/coelophysis.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos3.png",
+      "sourceCrop": [
+        0.3915063,
+        0.65054803,
+        0.36385755,
+        0.27047066
+      ],
+      "weight": 12,
+      "hp": 95,
+      "attack": 17,
+      "interval": 650,
+      "speed": 115,
+      "range": 45,
+      "role": "재빠른 물량",
+      "size": 101,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "pterodactyl",
+      "name": "프테로닥틸루스",
+      "image": "/assets/sprites/pterodactyl.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.01839339,
+        0.01569187,
+        0.18355856,
+        0.25927247
+      ],
+      "weight": 8,
+      "hp": 115,
+      "attack": 27,
+      "interval": 850,
+      "speed": 96,
+      "range": 105,
+      "role": "빠른 지원",
+      "size": 137,
+      "class": "flying",
+      "roleLabel": "비행"
+    },
+    {
+      "id": "cerato",
+      "name": "케라토사우루스",
+      "image": "/assets/sprites/cerato.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.21283784,
+        0.00499287,
+        0.23485986,
+        0.33131241
+      ],
+      "weight": 7,
+      "hp": 235,
+      "attack": 39,
+      "interval": 850,
+      "speed": 62,
+      "range": 60,
+      "role": "균형 전투",
+      "size": 145,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "apato",
+      "name": "아파토사우루스",
+      "image": "/assets/sprites/apato.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.48410911,
+        0.0288873,
+        0.19494494,
+        0.34165478
+      ],
+      "weight": 4,
+      "hp": 450,
+      "attack": 40,
+      "interval": 1500,
+      "speed": 36,
+      "range": 112,
+      "role": "긴 사거리",
+      "size": 170,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "eudimorphodon",
+      "name": "에우디모르포돈",
+      "image": "/assets/sprites/eudimorphodon.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.69081582,
+        0.03851641,
+        0.21709209,
+        0.29636234
+      ],
+      "weight": 8,
+      "hp": 115,
+      "attack": 27,
+      "interval": 850,
+      "speed": 96,
+      "range": 105,
+      "role": "빠른 지원",
+      "size": 137,
+      "class": "flying",
+      "roleLabel": "비행"
+    },
+    {
+      "id": "camara",
+      "name": "카마라사우루스",
+      "image": "/assets/sprites/camara.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.00825826,
+        0.25998573,
+        0.24436937,
+        0.33594864
+      ],
+      "weight": 4,
+      "hp": 450,
+      "attack": 40,
+      "interval": 1500,
+      "speed": 36,
+      "range": 112,
+      "role": "긴 사거리",
+      "size": 170,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "dilopho",
+      "name": "딜로포사우루스",
+      "image": "/assets/sprites/dilopho.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.26551552,
+        0.33737518,
+        0.21996997,
+        0.29529244
+      ],
+      "weight": 10,
+      "hp": 140,
+      "attack": 24,
+      "interval": 650,
+      "speed": 100,
+      "range": 52,
+      "role": "빠른 돌격",
+      "size": 120,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "diplo",
+      "name": "디플로도쿠스",
+      "image": "/assets/sprites/diplo.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.48961461,
+        0.37196862,
+        0.24399399,
+        0.26854494
+      ],
+      "weight": 4,
+      "hp": 450,
+      "attack": 40,
+      "interval": 1500,
+      "speed": 36,
+      "range": 112,
+      "role": "긴 사거리",
+      "size": 170,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "rioja",
+      "name": "리오하사우루스",
+      "image": "/assets/sprites/rioja.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.73798799,
+        0.38980029,
+        0.24399399,
+        0.26854494
+      ],
+      "weight": 8,
+      "hp": 275,
+      "attack": 30,
+      "interval": 1000,
+      "speed": 53,
+      "range": 65,
+      "role": "든든한 지원",
+      "size": 142,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "compso",
+      "name": "콤프소그나투스",
+      "image": "/assets/sprites/compso.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.02502503,
+        0.62018545,
+        0.16554054,
+        0.29885877
+      ],
+      "weight": 12,
+      "hp": 95,
+      "attack": 17,
+      "interval": 650,
+      "speed": 115,
+      "range": 45,
+      "role": "재빠른 물량",
+      "size": 101,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    },
+    {
+      "id": "allo",
+      "name": "알로사우루스",
+      "image": "/assets/sprites/allo.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.24449449,
+        0.62268188,
+        0.22384885,
+        0.31597718
+      ],
+      "weight": 7,
+      "hp": 235,
+      "attack": 39,
+      "interval": 850,
+      "speed": 62,
+      "range": 60,
+      "role": "균형 전투",
+      "size": 145,
+      "class": "assault",
+      "roleLabel": "돌격"
+    },
+    {
+      "id": "stego",
+      "name": "스테고사우루스",
+      "image": "/assets/sprites/stego.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.48573574,
+        0.65513552,
+        0.16816817,
+        0.32310984
+      ],
+      "weight": 4,
+      "hp": 480,
+      "attack": 42,
+      "interval": 1250,
+      "speed": 34,
+      "range": 68,
+      "role": "튼튼한 방어",
+      "size": 158,
+      "class": "tank",
+      "roleLabel": "탱커"
+    },
+    {
+      "id": "thecodonto",
+      "name": "테코돈토사우루스",
+      "image": "/assets/sprites/thecodonto.png",
+      "crop": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "sourceImage": "/assets/dinos2.png",
+      "sourceCrop": [
+        0.68518519,
+        0.68509272,
+        0.24837337,
+        0.30777461
+      ],
+      "weight": 12,
+      "hp": 95,
+      "attack": 17,
+      "interval": 650,
+      "speed": 115,
+      "range": 45,
+      "role": "재빠른 물량",
+      "size": 101,
+      "class": "skirmisher",
+      "roleLabel": "기동"
+    }
+  ]
+}
