@@ -5,3 +5,8 @@ singleQuote: false
 quoteProps: preserve
 semi: true
 trailingComma: none
+
+overrides:
+  - files: "*.css"
+    options:
+      printWidth: 100

@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "dev:frontend": "vite --host 0.0.0.0",
+    "dev:backend": "cd backend && go run .",
     "build": "npm run typecheck && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "server": "cd backend && go run .",
@@ -12,7 +14,9 @@
     "test:race": "cd backend && go test -race ./...",
     "test:client": "node --experimental-strip-types --test",
     "test": "npm run test:client && npm run test:server",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json",
+    "format:css": "prettier --write \"src/**/*.css\"",
+    "format:css:check": "prettier --check \"src/**/*.css\""
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -23,6 +27,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^5.1.1",
+    "prettier": "3.9.10",
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
   },
