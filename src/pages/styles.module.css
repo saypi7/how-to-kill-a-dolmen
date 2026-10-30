@@ -139,8 +139,9 @@
 
 @media (max-width: 650px) {
     .topbar {
-        padding: 0 16px;
-        height: 60px;
+        padding: 8px 12px;
+        height: auto;
+        min-height: 60px;
     }
 
     .wordmark {
@@ -148,7 +149,10 @@
     }
 
     .top-actions {
-        gap: 10px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        max-width: 210px;
     }
 
     .top-actions > button {

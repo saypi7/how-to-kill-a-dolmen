@@ -1,5 +1,5 @@
 export type Side = 0 | 1;
-export type Phase = "lobby" | "collect" | "battle" | "result";
+export type Phase = "lobby" | "countdown" | "collect" | "battle" | "result";
 export type ConnectionStatus = "connecting" | "connected" | "disconnected";
 export type DinoClass = "tank" | "assault" | "skirmisher" | "flying";
 
@@ -24,6 +24,7 @@ export interface Dino {
 
 export interface GameData {
     config: {
+        countdownMs: number;
         collectMs: number;
         battleMs: number;
         baseHp: number;
@@ -47,6 +48,11 @@ export interface Player {
     connected: boolean;
     inventory: Record<string, number>;
     collected: number;
+    summoned: number;
+    kills: number;
+    baseDamage: number;
+    rematchReady: boolean;
+    left: boolean;
     reconnectUntil?: number;
 }
 
@@ -71,6 +77,9 @@ export interface Unit {
 export interface GameState {
     event: "state";
     code: string;
+    matchId: string;
+    round: number;
+    nextPhase?: "collect" | "battle";
     phase: Phase;
     endsAt: number;
     serverNow: number;
@@ -97,7 +106,8 @@ export interface RequestPayloads {
     resume: { token: string };
     leave: Record<string, never>;
     ready: { ready: boolean };
-    collect: { id: string };
-    summon: { type: string };
+    rematch: { ready: boolean; matchId?: string };
+    collect: { id: string; matchId?: string };
+    summon: { type: string; matchId?: string };
 }
 export type RequestEvent = keyof RequestPayloads;

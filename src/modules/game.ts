@@ -17,3 +17,7 @@ export function resultMessage(state: GameState) {
     if (state.winner === null) return "연결이 종료되어 대전이 끝났습니다.";
     return state.winner === state.you ? "상대의 연결이 종료되었습니다." : "내 연결이 종료되어 대전에서 패배했습니다.";
 }
+
+export function canRematch(state: GameState) {
+    return state.phase === "result" && state.players.every(player => player !== null && player.connected && !player.left);
+}

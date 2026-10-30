@@ -26,6 +26,7 @@ import (
 )
 
 type Config struct {
+	CountdownMs    int64      `json:"countdownMs"`
 	CollectMs      int64      `json:"collectMs"`
 	BattleMs       int64      `json:"battleMs"`
 	BaseHP         int        `json:"baseHp"`
@@ -61,6 +62,7 @@ type GameData struct {
 
 func loadData(path string) (GameData, error) {
 	var data GameData
+	data.Config.CountdownMs = 3000
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return data, err
@@ -69,7 +71,7 @@ func loadData(path string) (GameData, error) {
 		return data, err
 	}
 	c := data.Config
-	if c.CollectMs <= 0 || c.BattleMs <= 0 || c.BaseHP <= 0 || c.TickMs < 10 || c.TickMs > 1000 || c.SpawnMin <= 0 || c.SpawnMax < c.SpawnMin || c.VisibleMin <= 0 || c.VisibleMax < c.VisibleMin || c.Bushes < 1 || c.Bushes > 30 || c.Width <= 0 || c.Bases[0] < 0 || c.Bases[1] > c.Width || c.Bases[0] >= c.Bases[1] || c.DisconnectMs <= 0 || c.SummonCooldown < 0 {
+	if c.CountdownMs < 0 || c.CountdownMs > 10000 || c.CollectMs <= 0 || c.BattleMs <= 0 || c.BaseHP <= 0 || c.TickMs < 10 || c.TickMs > 1000 || c.SpawnMin <= 0 || c.SpawnMax < c.SpawnMin || c.VisibleMin <= 0 || c.VisibleMax < c.VisibleMin || c.Bushes < 1 || c.Bushes > 30 || c.Width <= 0 || c.Bases[0] < 0 || c.Bases[1] > c.Width || c.Bases[0] >= c.Bases[1] || c.DisconnectMs <= 0 || c.SummonCooldown < 0 {
 		return data, errors.New("invalid game config")
 	}
 	seen, total := map[string]bool{}, 0
@@ -100,6 +102,7 @@ type Request struct {
 	ID        string `json:"id"`
 	Type      string `json:"type"`
 	Ready     *bool  `json:"ready,omitempty"`
+	MatchID   string `json:"matchId,omitempty"`
 }
 
 type Ack struct {
@@ -139,6 +142,10 @@ type Player struct {
 	NextSpawn      int64
 	LastSummon     int64
 	Collected      int
+	Summoned       int
+	Kills          int
+	BaseDamage     int
+	RematchReady   bool
 	Left           bool
 	Replies        map[string][]byte
 	ReplyOrder     []string
@@ -148,6 +155,8 @@ type Room struct {
 	ID        string
 	Code      string
 	Phase     string
+	NextPhase string
+	Round     int
 	Players   [2]*Player
 	EndsAt    int64
 	HP        [2]int
@@ -165,12 +174,20 @@ type PlayerView struct {
 	Connected      bool           `json:"connected"`
 	Inventory      map[string]int `json:"inventory"`
 	Collected      int            `json:"collected"`
+	Summoned       int            `json:"summoned"`
+	Kills          int            `json:"kills"`
+	BaseDamage     int            `json:"baseDamage"`
+	RematchReady   bool           `json:"rematchReady"`
+	Left           bool           `json:"left"`
 	ReconnectUntil int64          `json:"reconnectUntil,omitempty"`
 }
 
 type State struct {
 	Event     string         `json:"event"`
 	Code      string         `json:"code"`
+	MatchID   string         `json:"matchId"`
+	Round     int            `json:"round"`
+	NextPhase string         `json:"nextPhase,omitempty"`
 	Phase     string         `json:"phase"`
 	EndsAt    int64          `json:"endsAt"`
 	ServerNow int64          `json:"serverNow"`
@@ -434,6 +451,12 @@ func (h *Hub) handle(c *Client, req Request, now int64) {
 		return
 	}
 	err := ""
+	if p != nil && req.MatchID != "" && req.MatchID != c.room.ID && (req.Event == "collect" || req.Event == "summon" || req.Event == "rematch" || req.Event == "ready") {
+		ack.Error = "이전 대전의 요청이에요. 새 대전 화면에서 다시 시도해 주세요."
+		b, _ := json.Marshal(ack)
+		c.queue(b)
+		return
+	}
 	switch req.Event {
 	case "create":
 		if c.room != nil {
@@ -457,7 +480,7 @@ func (h *Hub) handle(c *Client, req Request, now int64) {
 			}
 			code = string(b)
 		}
-		room := &Room{ID: randomHex(16), Code: code, Phase: "lobby", HP: [2]int{h.data.Config.BaseHP, h.data.Config.BaseHP}, Units: []*Unit{}, UpdatedAt: now, LastTick: now}
+		room := &Room{ID: randomHex(16), Code: code, Phase: "lobby", Round: 1, HP: [2]int{h.data.Config.BaseHP, h.data.Config.BaseHP}, Units: []*Unit{}, UpdatedAt: now, LastTick: now}
 		h.rooms[code] = room
 		h.attach(c, room, 0, h.newPlayer(name))
 		ack.Token = room.Players[0].Token
@@ -536,7 +559,21 @@ func (h *Hub) handle(c *Client, req Request, now int64) {
 			p.Ready = !p.Ready
 		}
 		if a, b := c.room.Players[0], c.room.Players[1]; a != nil && b != nil && a.Ready && b.Ready && a.Client != nil && b.Client != nil {
-			h.startCollection(c.room, now)
+			h.beginCountdown(c.room, "collect", now)
+		}
+	case "rematch":
+		if p == nil || c.room.Phase != "result" {
+			err = "대전 결과 화면에서만 다시 할 수 있어요."
+			break
+		}
+		a, b := c.room.Players[0], c.room.Players[1]
+		if a == nil || b == nil || a.Left || b.Left || a.Client == nil || b.Client == nil {
+			err = "상대가 방에 연결되어 있어야 다시 할 수 있어요."
+			break
+		}
+		p.RematchReady = req.Ready == nil || *req.Ready
+		if a.RematchReady && b.RematchReady {
+			h.restart(c.room, now)
 		}
 	case "collect":
 		if p == nil || c.room.Phase != "collect" || now >= c.room.EndsAt {
@@ -572,6 +609,7 @@ func (h *Hub) handle(c *Client, req Request, now int64) {
 		}
 		p.LastSummon = now
 		p.Inventory[req.Type]--
+		p.Summoned++
 		c.room.Sequence++
 		direction := 1.0
 		if c.side == 1 {
@@ -589,13 +627,13 @@ func (h *Hub) handle(c *Client, req Request, now int64) {
 		if room.Phase == "battle" && now >= room.EndsAt {
 			h.step(room, now)
 		}
-		if room.Phase == "collect" || room.Phase == "battle" {
+		if room.Phase == "countdown" || room.Phase == "collect" || room.Phase == "battle" {
 			winner := 1 - side
 			h.finish(room, &winner, "leave", now)
 		}
 		delete(h.sessions, p.Token)
 		if room.Phase == "result" {
-			p.Client, p.Left = nil, true
+			p.Client, p.Left, p.RematchReady = nil, true, false
 		} else {
 			room.Players[side] = nil
 		}
@@ -649,6 +687,9 @@ func (h *Hub) disconnect(c *Client, now int64) {
 	p.Client = nil
 	p.DisconnectedAt = now
 	p.Ready = false
+	if room.Phase != "result" {
+		p.RematchReady = false
+	}
 	room.UpdatedAt = now
 	h.broadcast(room, now)
 }
@@ -662,8 +703,56 @@ func (h *Hub) removeIfEmpty(room *Room) {
 	delete(h.rooms, room.Code)
 }
 
+func (h *Hub) beginCountdown(room *Room, next string, now int64) {
+	room.NextPhase = next
+	for _, p := range room.Players {
+		if p != nil {
+			p.Spawns = map[string]Spawn{}
+		}
+	}
+	if h.data.Config.CountdownMs <= 0 {
+		if next == "collect" {
+			h.startCollection(room, now)
+		} else {
+			h.startBattle(room, now)
+		}
+		return
+	}
+	room.Phase = "countdown"
+	room.EndsAt = now + h.data.Config.CountdownMs
+	room.LastTick = now
+}
+
+func (h *Hub) startBattle(room *Room, now int64) {
+	room.Phase, room.NextPhase = "battle", ""
+	room.EndsAt = now + h.data.Config.BattleMs
+	room.LastTick = now
+}
+
+func (h *Hub) restart(room *Room, now int64) {
+	room.ID = randomHex(16)
+	room.Round++
+	room.Winner, room.Reason = nil, ""
+	room.HP = [2]int{h.data.Config.BaseHP, h.data.Config.BaseHP}
+	room.Units = []*Unit{}
+	room.UpdatedAt = now
+	// Sequence intentionally keeps increasing so a delayed old spawn ID cannot
+	// ever collect or summon an entity from the new match.
+	for _, p := range room.Players {
+		p.Ready, p.RematchReady = false, false
+		p.Collected, p.Summoned, p.Kills, p.BaseDamage = 0, 0, 0, 0
+		p.LastSummon, p.NextSpawn = 0, 0
+		p.Spawns = map[string]Spawn{}
+		p.Inventory = map[string]int{}
+		for _, d := range h.data.Dinos {
+			p.Inventory[d.ID] = 0
+		}
+	}
+	h.beginCountdown(room, "collect", now)
+}
+
 func (h *Hub) startCollection(room *Room, now int64) {
-	room.Phase = "collect"
+	room.Phase, room.NextPhase = "collect", ""
 	room.EndsAt = now + h.data.Config.CollectMs
 	room.LastTick = now
 	for _, p := range room.Players {
@@ -692,7 +781,7 @@ func (h *Hub) step(room *Room, now int64) {
 	for i, p := range room.Players {
 		expired[i] = p != nil && p.Client == nil && p.DisconnectedAt > 0 && now-p.DisconnectedAt >= cfg.DisconnectMs
 	}
-	if room.Phase == "collect" || room.Phase == "battle" {
+	if room.Phase == "countdown" || room.Phase == "collect" || room.Phase == "battle" {
 		if expired[0] || expired[1] {
 			var winner *int
 			if !(expired[0] && expired[1]) {
@@ -725,16 +814,20 @@ func (h *Hub) step(room *Room, now int64) {
 		delete(h.rooms, room.Code)
 		return
 	}
+	if room.Phase == "countdown" {
+		if now >= room.EndsAt {
+			at := room.EndsAt
+			if room.NextPhase == "collect" {
+				h.startCollection(room, at)
+			} else {
+				h.startBattle(room, at)
+			}
+		}
+		return
+	}
 	if room.Phase == "collect" {
 		if now >= room.EndsAt {
-			room.Phase = "battle"
-			room.EndsAt = now + cfg.BattleMs
-			room.LastTick = now
-			for _, p := range room.Players {
-				if p != nil {
-					p.Spawns = map[string]Spawn{}
-				}
-			}
+			h.beginCountdown(room, "battle", room.EndsAt)
 			return
 		}
 		for _, p := range room.Players {
@@ -853,10 +946,16 @@ func (h *Hub) combat(room *Room, now int64) {
 		}
 		if u.HP > 0 {
 			alive = append(alive, u)
+		} else if damage[u.ID] > 0 && room.Players[1-u.Side] != nil {
+			room.Players[1-u.Side].Kills++
 		}
 	}
 	room.Units = alive
 	for i := range room.HP {
+		actualDamage := min(room.HP[i], baseDamage[i])
+		if room.Players[1-i] != nil {
+			room.Players[1-i].BaseDamage += actualDamage
+		}
 		room.HP[i] = max(0, room.HP[i]-baseDamage[i])
 	}
 	if room.HP[0] == 0 || room.HP[1] == 0 {
@@ -876,7 +975,7 @@ func (h *Hub) finish(room *Room, winner *int, reason string, now int64) {
 	if room.Phase == "result" {
 		return
 	}
-	room.Phase = "result"
+	room.Phase, room.NextPhase = "result", ""
 	room.Winner = winner
 	room.Reason = reason
 	room.EndsAt = 0
@@ -884,6 +983,7 @@ func (h *Hub) finish(room *Room, winner *int, reason string, now int64) {
 	for i, p := range room.Players {
 		if p != nil {
 			p.Spawns = map[string]Spawn{}
+			p.Ready, p.RematchReady = false, false
 			if winner != nil && i != *winner {
 				for id := range p.Inventory {
 					p.Inventory[id] = 0
@@ -906,7 +1006,7 @@ func (h *Hub) finish(room *Room, winner *int, reason string, now int64) {
 			if p == nil {
 				players = append(players, map[string]any{"name": "", "collected": 0})
 			} else {
-				players = append(players, map[string]any{"name": p.Name, "collected": p.Collected})
+				players = append(players, map[string]any{"name": p.Name, "collected": p.Collected, "summoned": p.Summoned, "kills": p.Kills, "baseDamage": p.BaseDamage})
 			}
 		}
 		record := map[string]any{"id": room.ID, "room_code": room.Code, "winner": winner, "reason": reason, "players": players, "base_hp": room.HP, "finished_at": time.UnixMilli(now).UTC().Format(time.RFC3339Nano)}
@@ -938,10 +1038,10 @@ func (h *Hub) persistResult(body []byte) {
 }
 
 func (h *Hub) snapshot(room *Room, side int, now int64) State {
-	state := State{Event: "state", Code: room.Code, Phase: room.Phase, EndsAt: room.EndsAt, ServerNow: now, You: side, HP: room.HP, Units: room.Units, Spawns: []Spawn{}, Winner: room.Winner, Reason: room.Reason}
+	state := State{Event: "state", Code: room.Code, MatchID: room.ID, Round: room.Round, NextPhase: room.NextPhase, Phase: room.Phase, EndsAt: room.EndsAt, ServerNow: now, You: side, HP: room.HP, Units: room.Units, Spawns: []Spawn{}, Winner: room.Winner, Reason: room.Reason}
 	for i, p := range room.Players {
 		if p != nil {
-			state.Players[i] = &PlayerView{Name: p.Name, Ready: p.Ready, Connected: p.Client != nil, Inventory: p.Inventory, Collected: p.Collected}
+			state.Players[i] = &PlayerView{Name: p.Name, Ready: p.Ready, Connected: p.Client != nil, Inventory: p.Inventory, Collected: p.Collected, Summoned: p.Summoned, Kills: p.Kills, BaseDamage: p.BaseDamage, RematchReady: p.RematchReady, Left: p.Left}
 			if p.DisconnectedAt > 0 {
 				state.Players[i].ReconnectUntil = p.DisconnectedAt + h.data.Config.DisconnectMs
 			}

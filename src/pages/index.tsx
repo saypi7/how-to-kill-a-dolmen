@@ -2,8 +2,10 @@ import css from "./styles.module.css";
 import type { Ack, ConnectionStatus, GameData, GameState, RequestEvent, RequestPayloads, Spawn } from "../types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Connection } from "../modules/connection";
-import { preloadSprites } from "../modules/sprites";
+import { getImage, preloadSprites } from "../modules/sprites";
 import BackgroundMusic from "../components/BackgroundMusic";
+import Countdown from "../components/Countdown";
+import SoundEffects from "../components/SoundEffects";
 import Home from "./home";
 import Lobby from "./lobby";
 import Game from "./game";
@@ -27,6 +29,7 @@ export default function Page() {
     const [code, setCode] = useState("");
     const [busy, setBusy] = useState(false);
     const [readyBusy, setReadyBusy] = useState(false);
+    const [rematchBusy, setRematchBusy] = useState(false);
     const [guide, setGuide] = useState(false);
     const [encyclopedia, setEncyclopedia] = useState(false);
     const [notice, setNotice] = useState("");
@@ -35,6 +38,7 @@ export default function Page() {
     const clicked = useRef(new Set<string>());
     const readyPending = useRef(false);
     const enterPending = useRef(false);
+    const rematchPending = useRef(false);
     const now = useClock(state);
     const closeDialog = useCallback(() => {
         setGuide(false);
@@ -42,7 +46,7 @@ export default function Page() {
     }, []);
     useEffect(() => {
         clicked.current.clear();
-    }, [state?.code]);
+    }, [state?.code, state?.matchId]);
     async function loadData() {
         setLoadError(false);
         try {
@@ -51,6 +55,9 @@ export default function Page() {
             const result: GameData = await response.json();
             if (!result.config || !Array.isArray(result.dinos) || !result.dinos.length) throw Error();
             await preloadSprites(result.dinos);
+            // Warm the countdown image before the players can start their first match.
+            await getImage("/assets/ui/countdown.png").decode().catch(() => {});
+            for (const outcome of ["win", "lose", "draw"]) void getImage(`/assets/ui/result-${outcome}.png`).decode().catch(() => {});
             setData(result);
         } catch {
             setLoadError(true);
@@ -120,6 +127,17 @@ export default function Page() {
             setReadyBusy(false);
         }
     }
+    async function rematch() {
+        if (rematchPending.current || !state || status !== "connected") return;
+        rematchPending.current = true;
+        setRematchBusy(true);
+        try {
+            await send("rematch", { ready: !state.players[state.you]?.rematchReady, matchId: state.matchId });
+        } finally {
+            rematchPending.current = false;
+            setRematchBusy(false);
+        }
+    }
     async function copyCode() {
         if (!state) return;
         try {
@@ -134,7 +152,7 @@ export default function Page() {
         if (!data) return;
         if (clicked.current.has(spawn.id) || status !== "connected") return;
         clicked.current.add(spawn.id);
-        const ack = await send("collect", { id: spawn.id });
+        const ack = await send("collect", { id: spawn.id, matchId: state?.matchId });
         if (ack.ok) {
             setNotice(`${data.dinos.find((d) => d.id === spawn.type)?.name} 수집!`);
         } else if (!ack.error) {
@@ -143,6 +161,10 @@ export default function Page() {
     }
     const me = state?.players[state.you];
     const phase = state?.phase || "home";
+    useEffect(() => {
+        // Inventory scrolling must not hide the next countdown/result actions.
+        window.scrollTo(0, 0);
+    }, [phase]);
 
     return (
         <div className={css.app} data-phase={phase}>
@@ -152,6 +174,7 @@ export default function Page() {
                 </a>
                 <div className={css["top-actions"]}>
                     <BackgroundMusic />
+                    <SoundEffects state={state}/>
                     <button className={css["text-button"]} onClick={() => setEncyclopedia(true)}>
                         공룡 도감
                     </button>
@@ -197,11 +220,12 @@ export default function Page() {
                             now={now}
                             notice={notice}
                             catchDino={catchDino}
-                            summon={(type) => send("summon", { type })}
+                            summon={(type) => send("summon", { type, matchId: state.matchId })}
                             leave={leave}
                         />
                     )}
-                    {state && phase === "result" && <Result data={data} state={state} status={status} leave={leave} />}
+                    {state && phase === "countdown" && <Countdown state={state} now={now}/>}
+                    {state && phase === "result" && <Result data={data} state={state} status={status} leave={leave} rematch={rematch} rematchBusy={rematchBusy}/>}
                 </>
             )}
             {status !== "connected" && (

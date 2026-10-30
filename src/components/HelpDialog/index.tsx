@@ -38,7 +38,7 @@ export default function HelpDialog(props: Props) {
                     <ol className={css["instructions"]}>
                         <li>
                             <b>친구와 같은 방에 입장</b>
-                            <p>방을 만들고 코드를 공유하세요. 둘 다 준비하면 시작됩니다.</p>
+                            <p>방을 만들고 코드를 공유하세요. 둘 다 준비하면 3초 뒤 수집이 시작됩니다.</p>
                         </li>
                         <li>
                             <b>{Math.round((data?.config.collectMs || 30000) / 1000)}초 동안 공룡 수집</b>
@@ -46,8 +46,9 @@ export default function HelpDialog(props: Props) {
                         </li>
                         <li>
                             <b>공룡 소환, 고인돌 방어</b>
-                            <p>아래 목록을 클릭하면 한 마리씩 출전합니다. 상대 고인돌을 먼저 무너뜨리면 승리합니다.</p>
+                            <p>수집이 끝나면 3초 동안 전투를 준비합니다. 아래 목록을 클릭하면 한 마리씩 출전하며, 상대 고인돌을 먼저 무너뜨리면 승리합니다.</p>
                         </li>
+                        <li><b>같은 방에서 한 판 더</b><p>결과에서 두 사람 모두 ‘한 판 더!’를 누르면 새로 시작합니다. 신청은 상대가 동의하기 전까지 취소할 수 있습니다. 상단 ‘효과음’으로 타격·수집 소리를 켜거나 끌 수 있어요.</p></li>
                         <li>
                             <b>{Math.round((data?.config.battleMs || 90000) / 1000)}초 후에도 버텼다면</b>
                             <p>고인돌의 남은 체력이 높은 쪽이 승리합니다. 체력이 같으면 무승부입니다.</p>

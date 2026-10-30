@@ -15,7 +15,8 @@
       1115
     ],
     "summonCooldown": 180,
-    "disconnectMs": 15000
+    "disconnectMs": 15000,
+    "countdownMs": 3000
   },
   "dinos": [
     {
